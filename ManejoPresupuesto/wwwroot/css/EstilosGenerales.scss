@@ -5,7 +5,7 @@
 /* Colores */
 $primary: #1C2A33;
 $secondary: #324359;
-$light: #d9d9d9;
+$light: #f2f2f2;
 $dark: #232426;
 $danger: #CC574D;
 
@@ -32,8 +32,7 @@ $primary: #1C2A33;
 
 /* Botones */
 .btn {
-    padding-top: 2px;
-    padding-bottom: 2px;
+    padding: 0.45rem 0.9rem;
     border-radius: 0.3rem;
 }
 
@@ -56,7 +55,7 @@ $primary: #1C2A33;
 }
 
 .btn-third {
-    color: white;
+    color: $light;
 }
 
 .btn-FirstMenu {
@@ -87,17 +86,21 @@ body {
 
 /* Estilos de la tabla */
 .card-table {
-    box-shadow: -1px 1px 5px 0px $primary;
-    background-color: $gray-400;
+    box-shadow: -1px 1px 5px 0px $gray-500;
+    background-color: $gray-200;
+    padding: 0px;
+    margin-top: 0.45rem;
 }
 
 
-.table-primary {
-    background-color: $gray-400;
+.table-primary td {
+    background-color: $gray-200;
+    padding: 0.1rem;
 }
 
 
 .table-primary th {
+    background-color: $gray-200;
     color: $gray-600;
     font-size: 1rem;
     padding-bottom: 0.5rem;
@@ -106,5 +109,13 @@ body {
 
 /* Estilos para las tarjetas */
 .card-forms {
-    box-shadow: -2px 2px 18px 0px rgba(50,67,89,1);
+    box-shadow: -2px 2px 18px 0px $gray-600;
+    color: $gray-600;
+    background-color: $gray-100;
+}
+
+
+/* Estilo para el formulario */
+.form-control {
+    padding: 0.275rem 0.65rem;
 }

@@ -3,6 +3,7 @@ using ManejoPresupuesto.Models;
 using ManejoPresupuesto.Servicios;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
+using Microsoft.Identity.Client;
 using System.Runtime.InteropServices;
 
 namespace ManejoPresupuesto.Controllers
@@ -58,6 +59,37 @@ namespace ManejoPresupuesto.Controllers
 
 
         [HttpGet]
+        public async Task<ActionResult> Editar(int id)
+        {
+            var usuarioId = serviciosUsuarios.ObtenerUusarioId();
+            var tipoCuenta = await repositorioTiposCuentas.ObtenerPorId(id, usuarioId);
+
+            if (tipoCuenta is null) 
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+
+            return View(tipoCuenta);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Editar(TipoCuenta tipoCuenta)
+        {
+            var usuarioId = serviciosUsuarios.ObtenerUusarioId();
+            var tiposCuentaExiste = await repositorioTiposCuentas.ObtenerPorId(tipoCuenta.Id, usuarioId);
+
+            if (tiposCuentaExiste is null) 
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+
+            await repositorioTiposCuentas.Actualizar(tipoCuenta);
+            return RedirectToAction("Index");
+        }
+
+
+
+            [HttpGet]
         public async Task<IActionResult> VerificarExisteTipoCuenta(string nombre)
         {
             var usuarioId = serviciosUsuarios.ObtenerUusarioId();
@@ -71,6 +103,36 @@ namespace ManejoPresupuesto.Controllers
             return Json(true);
 
         }
+
+
+        public async Task<IActionResult> Borrar(int id)
+        {
+            var usuarioId = serviciosUsuarios.ObtenerUusarioId();
+            var tipoCuenta = await repositorioTiposCuentas.ObtenerPorId(id, usuarioId);
+
+            if (tipoCuenta is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+
+            return View(tipoCuenta);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> BorraTipoCuenta(int id)
+        {
+            var usuarioId = serviciosUsuarios.ObtenerUusarioId();
+            var tipoCuenta = await repositorioTiposCuentas.ObtenerPorId(id, usuarioId);
+
+            if (tipoCuenta is null)
+            {
+                return RedirectToAction("NoEncontrado", "Home");
+            }
+             
+            await repositorioTiposCuentas.Borrar(id);
+            return RedirectToAction("Index");
+        }
+
 
     }
 }

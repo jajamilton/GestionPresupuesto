@@ -1,7 +1,10 @@
-﻿@model TipoCuenta
+﻿
+@model TipoCuenta
 
 @{
-    ViewData["Title"] = "Crear Tipo Cuenta";
+
+    ViewData["Title"] = "Editar Tipo Cuneta";
+
 }
 
 
@@ -19,7 +22,7 @@
 
                     <!-- Titulo y descripcion-->
                     <div class="col-12">
-                        <p class="h5 fw-bold text-center">Crear tipo de Cuenta</p>
+                        <p class="h5 fw-bold text-center">Editar tipo de Cuenta: @Model.Nombre</p>
                     </div>
                     <div class="col-2"></div>
                     <div class="col-8">
@@ -39,8 +42,9 @@
                         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
                         <!-- Formulario -->
-                        <form asp-asp-controller="TiposCuentas" asp-action="Crear">
+                        <form asp-asp-controller="TiposCuentas" asp-action="Editar">
 
+                            <input type="hidden" asp-for="Id" />
                             <div class="mb-3 row">
                                 <label asp-for="Nombre" class="col-sm-4 col-form-label text-center"></label>
                                 <div class="col-sm-7">
@@ -52,7 +56,7 @@
 
                             <div class="m-4 row">
                                 <div class="col-12 text-end">
-                                    <button type="submit" class="btn btn-third">Enviar</button>
+                                    <button type="submit" class="btn btn-third">Editar</button>
                                     <a class="btn btn-danger" asp-action="Index">Cancelar</a>
                                 </div>
                             </div>
@@ -70,10 +74,3 @@
     </div>
     <div class="col-3"></div>
 </div>
-
-
-
-
-@section Scripts{
-    <partial name="_ValidationScriptsPartial" />
-}
