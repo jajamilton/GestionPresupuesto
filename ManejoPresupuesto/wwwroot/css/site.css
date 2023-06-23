@@ -14,5 +14,19 @@ html {
 }
 
 body {
-  margin-bottom: 60px;
+    
+}
+
+.header-title {
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: .02em;
+    font-size: .9rem;
+    margin-top: 0;
+    font-weight: 800;
+}
+
+
+.text-content {
+    font-size: 0.9rem;
 }

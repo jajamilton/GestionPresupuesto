@@ -1,0 +1,78 @@
+﻿@model IEnumerable<TipoCuenta>
+
+@{
+    ViewData["Title"] = "Tipos Cuentas";
+}
+
+<div class="row pt-4">
+
+    <div class="col-4"></div>
+
+    <div class="col-4">
+
+        <div class="card bg-secondary text-light card-forms w-100">
+            <div class="card-body">
+
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h4 class="h5 mt-0 mb-3 fw-bold">Tipos de Cuenta</h4>
+                        <h5 class="display-6 text-center"> El tipo de cuenta se refiers a como podemos agrupar cuentas Ejemplos: Prestamos Tarjetas, etc. </h5>
+                    </div>
+
+                    <div class="col-12 text-center">
+                        <a asp-action="Crear" class="btn btn-third text-secondary">Crear Nuevo</a>
+                    </div>
+
+                    <div class="col-12">
+
+                        <div class="card card-table p-0 mt-3" >
+
+                            <table class="table table-hover table-sm table-primary mt-1 text-center">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Aciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var tipoCuenta in Model)
+                                    {
+                                        <tr>
+                                            <td>
+                                                @tipoCuenta.Nombre
+                                            </td>
+                                            <td>
+                                                <button type="button" class="btn btn-outline-primary border-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                        <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                                        <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                                                    </svg>
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger border-0">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                                        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                                    </svg>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-4"></div>
+</div>
+
+
+
+
+
