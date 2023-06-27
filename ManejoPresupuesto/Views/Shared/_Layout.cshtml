@@ -3,11 +3,15 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
     <title>@ViewData["Title"] - ManejoPresupuesto</title>
+    @*<link rel="stylesheet" href="ManejoPresupuesto.styles.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="~/css/EstilosGenerales.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @*<link rel="stylesheet" href="~/ManejoPresupuesto.styles.css" asp-append-version="true" />*@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    
 </head>
 <body>
 
@@ -34,12 +38,12 @@
                             <div class="card card-body bg-primary border-0 p-2">
 
                                 <div class="list-group">
-                                    <button type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-0 pb-0">
+                                    <a asp-action="Crear" asp-controller="TiposCuentas" type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-0 pb-0">
                                         Crear
-                                    </button>
-                                    <button type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-1 pb-0">
+                                    </a>
+                                    <a asp-action="Index" asp-controller="TiposCuentas" type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-1 pb-0">
                                         Consultar
-                                    </button>
+                                    </a>
                                 </div>
 
                             </div>
@@ -50,23 +54,26 @@
                         <button class="btn btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
                             <i class="bi bi-bookmarks"></i> Categorias
                         </button>
-
-                        <div class="collapse" id="collapseWidthExample">
-                            <div class="card card-body">
-                                <ul class="list-group">
-                                    <li class="list-group-item disabled" aria-disabled="true">A disabled item</li>
-                                    <li class="list-group-item">A second item</li>
-                                    <li class="list-group-item">A third item</li>
-                                    <li class="list-group-item">A fourth item</li>
-                                    <li class="list-group-item">And a fifth one</li>
-                                </ul>
-                            </div>
-                        </div>
                     </li>
                     <li class="nav-item mb-2">
-                        <button class="btn btn-primary btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                        <button class="btn btn-primary btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseCuentas" aria-expanded="false" aria-controls="collapseCuentas">
                             <i class="bi bi-person-vcard"></i> Cuentas
                         </button>
+
+                        <div class="collapse" id="collapseCuentas">
+                            <div class="card card-body bg-primary border-0 p-2">
+
+                                <div class="list-group">
+                                    <a asp-action="Crear" asp-controller="Cuentas" type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-0 pb-0">
+                                        Crear
+                                    </a>
+                                    <a asp-action="Index" asp-controller="Cuentas" type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-1 pb-0">
+                                        Consultar
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
                     </li>
                     <li class="nav-item mb-2">
                         <button class="btn btn-primary btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
@@ -97,14 +104,14 @@
                                 <span class="navbar-toggler-icon"></span>
                             </button>
                             <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                                <ul class="navbar-nav flex-grow-1">
+                               <!-- <ul class="navbar-nav flex-grow-1">
                                     <li class="nav-item">
                                         <a class="nav-link text-light" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                                     </li>
                                     <li class="nav-item">
                                         <a class="nav-link text-light" asp-area="" asp-controller="TiposCuentas" asp-action="Index">Tipos Cuentas</a>
                                     </li>
-                                </ul>
+                                 </ul> -->
                             </div>
                         </div>
                     </nav>
@@ -134,6 +141,7 @@
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/jquery-ui/jquery-ui.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

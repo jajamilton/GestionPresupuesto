@@ -1,0 +1,109 @@
+﻿
+
+@model CuentaCreacionViewModel;
+
+@{
+
+    ViewData["Title"] = "Editar Cuenta";
+
+}
+
+
+<div class="row">
+    <div class="col-3"></div>
+
+    <!-- Contenedor principal de formulario crar -->
+    <div class="col-6">
+
+        <div class="card card-forms w-100">
+            <div class="card-body">
+
+                <!-- Fila titulo y descripcions -->
+                <div class="row">
+
+                    <!-- Titulo y descripcion-->
+                    <div class="col-12">
+                        <p class="h5 fw-bold text-center">Editar Cuenta @Model.Nombre</p>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <p class="display-6 text-center">
+                            La cuenta se refiere  los distintos balances de tienes:
+                            tarjetas de credito, cuentas ahorro, prestamos etc.
+                        </p>
+                    </div>
+                    <div class="col-2"></div>
+
+                </div>
+
+                <!-- Fila formulario -->
+                <div class="row">
+                    <div class="col">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <input type="hidden" asp-for="Id" />
+
+                        <!-- Formulario -->
+                        <form asp-action="Editar">
+
+                            <div class="mb-3 row">
+                                <label asp-for="Nombre" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="Nombre" asp-for="Nombre" class="form-control" />
+                                    <span asp-validation-for="Nombre" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+
+                            <div class="mb-3 row">
+                                <label asp-for="TipoCuentaId" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <select asp-for="TipoCuentaId" asp-items="Model.TiposCuentas" class="form-select"></select>
+                                    <span asp-validation-for="TipoCuentaId" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="Balance" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="Balance" asp-for="Balance" class="form-control" />
+                                    <span asp-validation-for="Balance" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="Descripcion" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <textarea type="text" id="Descripcion" asp-for="Descripcion" class="form-control"></textarea>
+                                    <span asp-validation-for="Descripcion" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="m-4 row">
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-third">Crear</button>
+                                    <a class="btn btn-danger" asp-action="Index">Cancelar</a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-3"></div>
+</div>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

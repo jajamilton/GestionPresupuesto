@@ -1,0 +1,160 @@
+﻿@model IEnumerable<IndiceCuentasViewModel>
+
+@{
+    ViewData["Title"] = "Cuentas";
+
+    string FormatearString(decimal balance)
+    {
+        return Math.Abs(balance).ToString("N");
+    }
+
+
+    string ObtenerClaseBalance(decimal balance)
+    {
+        return balance >= 0 ? "text-success" : "text-danger";
+    }
+}
+
+
+<div class="row pt-4">
+
+    <div class="col-3"></div>
+
+    <!-- Contnedor principal -->
+    <div class="col-6">
+
+        <!-- Card conenedor de tabla -->
+        <div class="card card-forms w-100">
+            <div class="card-body">
+
+                <div class="row">
+
+                    <!-- Titulo y descripcion -->
+                    <div class="col-12 text-center">
+                        <h4 class="h5 mt-0 mb-3 fw-bold">Cuenta</h4>
+                        <h5 class="display-6 text-center">
+                            La cuenta se refiere  los distintos balances de tienes:
+                            tarjetas de credito, cuentas ahorro, prestamos etc.
+                        </h5>
+                    </div>
+
+                    <!-- Boton Crer Nuevo -->
+                    <div class="col-12 text-center">
+                        <a asp-action="Crear" class="btn btn-third">Crear</a>
+                    </div>
+
+                    <!-- Tabla con tipos de cuentas -->
+                    <div class="col-12">
+
+                        <div class="card card-table">
+
+                            <div class="row">
+                                <div class="col-4 text-center">
+                                    <div class="f3 fw-semibold pt-2">Pasivos:</div>
+
+                                    <div class="alert alert-danger p-1 text-center m-1" role="alert">
+                                        @FormatearString(@Model.Where(x => x.Balance < 0).Sum(x => x.Balance))
+                                    </div>
+                                </div>
+
+                                <div class="col-4 text-center">
+                                    <div class="f3 fw-semibold pt-2">Activos:</div>
+
+                                    <div class="alert alert-success p-1 text-center m-1" role="alert">
+                                        @FormatearString(@Model.Where(x => x.Balance > 0).Sum(x => x.Balance))
+                                    </div>
+                                </div>
+
+                                <div class="col-4 text-center">
+                                    <div class="f3 fw-semibold pt-2">Total:</div>
+
+                                    <div class="alert alert-primary p-1 m-1 text-center" role="alert">
+                                        @FormatearString(@Model.Sum(x => x.Balance))
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row pt-3">
+                                <div class="col">
+
+                                    <div class="accordion accordionCuentas">
+
+                                        @foreach (var tipoCuenta in Model)
+                                        {
+                                            <div class="accordion-item">
+                                                <h2 class="accordion-header">
+
+                                                    @{
+                                                        var id = tipoCuenta.TipoCuenta.Replace(" ", "");
+                                                        var dataBSTarget = "#" + id;
+                                                        var claseTipoCuenta = ObtenerClaseBalance(tipoCuenta.Balance);
+                                                    }
+
+                                                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="@dataBSTarget" aria-expanded="true" aria-controls="collapseOne">
+
+                                                        <span class="me-3">
+                                                            <span><strong> @tipoCuenta.TipoCuenta</strong></span>
+                                                            <span class="@claseTipoCuenta fw-bold">@tipoCuenta.Balance</span>
+                                                        </span>
+
+                                                    </button>
+
+                                                </h2>
+
+                                                <div id="@id" class="accordion-collapse collapse show">
+                                                    <div>
+                                                        <ul class="list-group">
+                                                            @foreach (var cuenta in tipoCuenta.Cuentas)
+                                                            {
+                                                                var claseCuenta = ObtenerClaseBalance(cuenta.Balance);
+
+                                                                <li class="list-group-item">
+
+                                                                    <div class="col-4">
+                                                                        <span><strong>@cuenta.Nombre</strong></span>
+                                                                    </div>
+                                                                    <div class="col-6">
+                                                                        <a asp-action="Editar" asp-route-id="@cuenta.Id" class="btn btn-outline-primary border-0">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                                                                                <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"></path>
+                                                                                <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"></path>
+                                                                            </svg>
+                                                                        </a>
+                                                                        <a asp-action="Borrar" asp-route-id="@cuenta.Id" class="btn btn-outline-danger border-0">
+                                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x-circle-fill" viewBox="0 0 16 16">
+                                                                                <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM5.354 4.646a.5.5 0 1 0-.708.708L7.293 8l-2.647 2.646a.5.5 0 0 0 .708.708L8 8.707l2.646 2.647a.5.5 0 0 0 .708-.708L8.707 8l2.647-2.646a.5.5 0 0 0-.708-.708L8 7.293 5.354 4.646z"></path>
+                                                                            </svg>
+                                                                        </a>
+                                                                    </div>
+                                                                    <div class="col-2 text-center">
+                                                                        <span class="@claseCuenta">@cuenta.Balance</span>
+                                                                    </div>
+                                                                    
+                                                                </li>
+                                                            }
+                                                        </ul>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-3"></div>
+</div>

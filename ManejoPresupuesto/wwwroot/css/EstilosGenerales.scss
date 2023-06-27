@@ -1,7 +1,4 @@
 ﻿
-
-/* Estilos modificados desde boostrapp */
-
 /* Colores */
 $primary: #1C2A33;
 $secondary: #324359;
@@ -9,11 +6,24 @@ $light: #f2f2f2;
 $dark: #232426;
 $danger: #CC574D;
 
-$theme-colors: ( "primary": $primary,"secondary":$secondary,"light":$light,"dark": $dark,"danger":$danger);
 
 @import "../lib/bootstrap/scss/_functions.scss";
 @import "../lib/bootstrap/scss/_variables.scss";
 @import "../lib/bootstrap/scss/_variables-dark.scss";
+
+/* Estilos modificados desde boostrapp */
+
+
+$theme-colors: ( 
+    "primary": $primary,
+    "secondary":$secondary,
+    "light":$light,
+    "dark": $dark,
+    "danger":$danger,
+     "success":    $success,
+    "info":       $info,
+    "warning":    $warning,
+);
 
 /* Colores nuevos, fucion con los demas colores, se establece tamaño de la fuentes */
 $custom-colors: ( "third":#5ABFA3);
@@ -117,5 +127,9 @@ body {
 
 /* Estilo para el formulario */
 .form-control {
-    padding: 0.275rem 0.65rem;
+    padding: 0.19rem 0.19rem 0.19rem 0.8rem
+}
+
+.form-select {
+    padding: 0.19rem 0.19rem 0.19rem 0.8rem
 }
