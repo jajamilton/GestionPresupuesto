@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ManejoPresupuesto.Controllers;
 using ManejoPresupuesto.Models;
 
 namespace ManejoPresupuesto.Servicios
@@ -8,6 +9,7 @@ namespace ManejoPresupuesto.Servicios
         public AutoMapperProfile()
         {
             CreateMap<Cuenta, CuentaCreacionViewModel>();
+            CreateMap<TransaccionActualizacionViewModel, Transaccion>().ReverseMap();
         }
     }
 }

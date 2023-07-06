@@ -97,9 +97,25 @@
                         </button>
                     </li>
                     <li class="nav-item mb-2">
-                        <button class="btn btn-primary btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">
+                        <button class="btn btn-primary btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseTransacciones" aria-expanded="false" aria-controls="collapseWidthExample">
                             <i class="bi bi-wallet2"></i> Transacciones
                         </button>
+
+                        <div class="collapse" id="collapseTransacciones">
+                            <div class="card card-body bg-primary border-0 p-2">
+
+                                <div class="list-group">
+                                    <a asp-action="Crear" asp-controller="Transacciones" type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-0 pb-0">
+                                        Crear
+                                    </a>
+                                    <a asp-action="Index" asp-controller="Cuentas" type="button" class="list-group-item list-group-item-action bg-primary border-0 text-light p-2 pt-1 pb-0">
+                                        Consultar
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
                     </li>
                     <li class="nav-item mb-2">
                         <button class="btn btn-primary btn-FirstMenu" data-bs-toggle="collapse" data-bs-target="#collapseWidthExample" aria-expanded="false" aria-controls="collapseWidthExample">

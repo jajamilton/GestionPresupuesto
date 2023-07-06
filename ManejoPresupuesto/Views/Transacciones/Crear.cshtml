@@ -1,0 +1,141 @@
+﻿@model TrasaccionViewModel
+
+
+@{
+    ViewData["Ttile"] = "Crear Transaccion";
+}
+
+
+
+<div class="row">
+    <div class="col-3"></div>
+
+    <!-- Contenedor principal de formulario crar -->
+    <div class="col-6">
+
+        <div class="card card-forms w-100">
+            <div class="card-body">
+
+                <!-- Fila titulo y descripcions -->
+                <div class="row">
+
+                    <!-- Titulo y descripcion-->
+                    <div class="col-12">
+                        <p class="h5 fw-bold text-center">Crear Transacciones</p>
+                    </div>
+                    <div class="col-2"></div>
+                    <div class="col-8">
+                        <p class="display-6 text-center">
+                            Una transaccion te permite indicar tus ingresos y gastos
+                        </p>
+                    </div>
+                    <div class="col-2"></div>
+
+                </div>
+
+                <!-- Fila formulario -->
+                <div class="row">
+                    <div class="col">
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <!-- Formulario -->
+                        <form asp-action="Crear">
+
+                            <div class="mb-3 row">
+                                <label asp-for="FechaTransaccion" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <input type="date" id="FechaTransaccion" asp-for="FechaTransaccion" class="form-control" />
+                                    <span asp-validation-for="FechaTransaccion" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+
+                            <div class="mb-3 row">
+                                <label asp-for="CuentaId" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <select asp-for="CuentaId" asp-items="Model.Cuentas" class="form-select"></select>
+                                    <span asp-validation-for="CuentaId" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="TipoOperacionId" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <select asp-for="TipoOperacionId" asp-items="Html.GetEnumSelectList<TipoOperacion>()" class="form-select"></select>
+                                    <span asp-validation-for="TipoOperacionId" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="CategoriaId" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <select asp-for="CategoriaId" asp-items="Model.Categoria" class="form-select"></select>
+                                    <span asp-validation-for="CategoriaId" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="Monto" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="Monto" asp-for="Monto" class="form-control" />
+                                    <span asp-validation-for="Monto" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+                            <div class="mb-3 row">
+                                <label asp-for="Nota" class="col-sm-4 col-form-label text-center"></label>
+                                <div class="col-sm-7">
+                                    <input type="text" id="Nota" asp-for="Nota" class="form-control" />
+                                    <span asp-validation-for="Nota" class="text-danger"></span>
+                                </div>
+                                <div class="col-1"></div>
+                            </div>
+
+
+
+                            <div class="m-4 row">
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-third">Crear</button>
+                                    <a class="btn btn-danger" asp-action="Index">Cancelar</a>
+                                </div>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div>
+
+
+    </div>
+    <div class="col-3"></div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript" src="~/js/FormularioTransacciones.js" asp-append-version="true"></script>
+
+    <script>
+
+        const utlObtenerCategorias = '@Url.Action("ObtenerCategorias")';
+
+
+    $(function(){
+        $("#TipoOperacionId").change(async function(){
+                inicializarFormularioTransacciones(utlObtenerCategorias);
+
+        })
+    })
+    </script>
+
+}
