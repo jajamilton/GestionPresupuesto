@@ -112,7 +112,11 @@
                                                                 <li class="list-group-item">
 
                                                                     <div class="col-4">
-                                                                        <span><strong>@cuenta.Nombre</strong></span>
+                                                                        <span>
+                                                                            <strong>
+                                                                                <a asp-action="Detalle" asp-route-id="@cuenta.Id">@cuenta.Nombre</a>
+                                                                            </strong>
+                                                                         </span>
                                                                     </div>
                                                                     <div class="col-6">
                                                                         <a asp-action="Editar" asp-route-id="@cuenta.Id" class="btn btn-outline-primary border-0">
