@@ -6,6 +6,7 @@
 
 @{
     ViewData["Ttile"] = "Editar Transaccion";
+    var linkCancelar = Model.uralRetorno ?? Url.Action("Index");
 }
 
 
@@ -48,6 +49,7 @@
                             <input type="hidden" asp-for="Id" />
                             <input  type="hidden" asp-for="MontoAnterior" />
                             <input type="hidden" asp-for="CuentaAnteriorId" />
+                            <input type="hidden" asp-for="uralRetorno" />
 
 
                             <div class="mb-3 row">
@@ -111,7 +113,7 @@
                                 <div class="col-12 text-end">
                                     <button type="submit" class="btn btn-third">Actualizar</button>
                                     <button type="submit" class="btn btn-danger" asp-action="Borrar">Borrar</button>
-                                    <a class="btn btn-danger" asp-action="Index">Cancelar</a>
+                                    <a class="btn btn-danger" href="@linkCancelar">Cancelar</a>
                                 </div>
                             </div>
                         </form>

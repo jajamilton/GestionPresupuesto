@@ -7,6 +7,7 @@ namespace ManejoPresupuesto.Controllers
         public int CuentaAnteriorId { get; set; }
         public decimal MontoAnterior { get; set; }
 
+        public string uralRetorno { get; set; }
 
     }
 }
