@@ -13,18 +13,21 @@ namespace ManejoPresupuesto.Controllers
         private readonly IRepositorioCuentas repositorioCuentas;
         private readonly IMapper mapper;
         private readonly IRespositorioTransaccion respositorioTransaccion;
+        private readonly IServicioReportes servicioReportes;
 
         public CuentasController(IRepositorioTiposCuentas repositorioTiposCuentas, 
             IServiciosUsuarios serviciosUsuarios,
             IRepositorioCuentas repositorioCuentas, 
             IMapper mapper,
-            IRespositorioTransaccion respositorioTransaccion )
+            IRespositorioTransaccion respositorioTransaccion,
+            IServicioReportes servicioReportes)
         {
             this.repositorioTiposCuentas = repositorioTiposCuentas;
             ServiciosUsuarios = serviciosUsuarios;
             this.repositorioCuentas = repositorioCuentas;
             this.mapper = mapper;
             this.respositorioTransaccion = respositorioTransaccion;
+            this.servicioReportes = servicioReportes;
         }
 
         public IServiciosUsuarios ServiciosUsuarios { get; }
@@ -165,64 +168,25 @@ namespace ManejoPresupuesto.Controllers
         }
 
 
+        /// <summary>
+        /// Metodo que carga las transacciones por la cuenta selecionada por el usuario
+        /// </summary>
+        /// <param name="id">id de la cuenta que el usuario selecciona y por la que se fitlran las trnsacciones</param>
+        /// <param name="mes">mes actual para a su vez fitlrar las transacciones</param>
+        /// <param name="año">mes actual para a su vez fitlrar las transacciones</param>
+        /// <returns>muestra las transacciones para una cuenta seleccionada</returns>
         [HttpGet]
         public async Task<IActionResult> Detalle(int id, int mes, int año)
         {
+            /// Se ontiene el id del usuario que ingresa y se consutla si la cuenta selecionada existe
             var UsuarioID = ServiciosUsuarios.ObtenerUusarioId();
             var cuenta = await repositorioCuentas.ObtenerPorId(id, UsuarioID);
 
-            if (cuenta is null)
-            {
-                return RedirectToAction("NoEncontrado", "Home");
-            }
-
-            DateTime fechaInicio;
-            DateTime fechaFin;
-
-            if (mes <= 0 || mes>12 || año <= 1900)
-            {
-                var hoy = DateTime.Today;
-                fechaInicio = new DateTime(hoy.Year, hoy.Month, 1);
-            }
-            else
-            {
-                fechaInicio = new DateTime(año, mes, 1);
-            }
-
-            fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
-
-            var obtenerTransaccionesPorCuenta = new ObtenerTransaccionPorCuenta()
-            {
-                CuentaId = id,
-                UsuarioId = UsuarioID,
-                FechaInicio = fechaInicio,
-                FechaFin = fechaFin
-            };
-
-            var transacciones = await respositorioTransaccion.ObtenerPorCuentaId(obtenerTransaccionesPorCuenta);
-
-            var modelo = new ReporteTransaccionesDetalledas();
+            /// se carga el nombre de la cuenta selecioanda para cargar a nivel de interfaz
             ViewBag.Nombre = cuenta.Nombre;
 
-            var transaccionPorFecha = transacciones.OrderByDescending(x => x.FechaTransaccion)
-                .GroupBy(x => x.FechaTransaccion)
-                .Select(grupo => new ReporteTransaccionesDetalledas.TransaccionesPorFecha()
-                {
-                    FechaTransaccion = grupo.Key,
-                    Transacciones = grupo.AsEnumerable()
-                });
-
-            modelo.TransaccionAgrupadas = transaccionPorFecha;
-            modelo.FechaInicio = fechaInicio;
-            modelo.FechaFin=fechaFin;
-
-            ViewBag.mesAnterior = fechaInicio.AddMonths(-1).Month;
-            ViewBag.añoAnterior = fechaInicio.AddMonths(-1).Year;
-
-            ViewBag.mesPosterior = fechaInicio.AddMonths(1).Month;
-            ViewBag.añoPosterior = fechaInicio.AddMonths(1).Year;
-            ViewBag.urlRetorno = HttpContext.Request.Path + HttpContext.Request.QueryString;
-
+            /// se consutlan las transacciones y se envian a la vista para ser mostradas
+            var modelo = await servicioReportes.ObtenerReporteTransaccionesDetalladasProCuenta(UsuarioID, id, mes, año, ViewBag);
             return View(modelo);
 
         }

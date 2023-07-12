@@ -15,71 +15,37 @@ namespace ManejoPresupuesto.Controllers
         private readonly IRepositorioCuentas repositorioCuentas;
         private readonly IRepositorioCtagorias repositorioCtagorias;
         private readonly IMapper mapper;
+        private readonly IServicioReportes servicioReportes;
 
         public TransaccionesController(IServiciosUsuarios servicios, 
             IRespositorioTransaccion respositorioTransaccion, 
             IRepositorioCuentas repositorioCuentas,
             IRepositorioCtagorias repositorioCtagorias,
-            IMapper mapper )
+            IMapper mapper,
+            IServicioReportes servicioReportes)
         {
             this.servicios = servicios;
             this.respositorioTransaccion = respositorioTransaccion;
             this.repositorioCuentas = repositorioCuentas;
             this.repositorioCtagorias = repositorioCtagorias;
             this.mapper = mapper;
+            this.servicioReportes = servicioReportes;
         }
 
 
-
+        /// <summary>
+        /// Controladore que muestra las transacciones para un usuario que ingresa
+        /// </summary>
+        /// <param name="mes">mes actual</param>
+        /// <param name="año">año acutal</param>
+        /// <returns></returns>
         public async Task<IActionResult> Index(int mes, int año)
         {
+            /// se obtiene el usuario que ingresa para cargar las transacciones
             var usuarioId = servicios.ObtenerUusarioId();
+            var modelo = await servicioReportes.ObtenerReporteTransaccionesDetalladas(usuarioId,mes,año, ViewBag);
 
-            DateTime fechaInicio;
-            DateTime fechaFin;
-
-            if (mes <= 0 || mes > 12 || año <= 1900)
-            {
-                var hoy = DateTime.Today;
-                fechaInicio = new DateTime(hoy.Year, hoy.Month, 1);
-            }
-            else
-            {
-                fechaInicio = new DateTime(año, mes, 1);
-            }
-
-            fechaFin = fechaInicio.AddMonths(1).AddDays(-1);
-
-            var parametro = new ParamerosObtenerTransaccioPorUsuario()
-            {
-                UsuarioId = usuarioId,
-                FechaInicio = fechaInicio,
-                FechaFin = fechaFin
-            };
-            var transacciones = await respositorioTransaccion.ObtenerPorUsuarioId(parametro);
-
-            var modelo = new ReporteTransaccionesDetalledas();
-
-            var transaccionPorFecha = transacciones.OrderByDescending(x => x.FechaTransaccion)
-                .GroupBy(x => x.FechaTransaccion)
-                .Select(grupo => new ReporteTransaccionesDetalledas.TransaccionesPorFecha()
-                {
-                    FechaTransaccion = grupo.Key,
-                    Transacciones = grupo.AsEnumerable()
-                });
-
-            modelo.TransaccionAgrupadas = transaccionPorFecha;
-            modelo.FechaInicio = fechaInicio;
-            modelo.FechaFin = fechaFin;
-
-            ViewBag.mesAnterior = fechaInicio.AddMonths(-1).Month;
-            ViewBag.añoAnterior = fechaInicio.AddMonths(-1).Year;
-
-            ViewBag.mesPosterior = fechaInicio.AddMonths(1).Month;
-            ViewBag.añoPosterior = fechaInicio.AddMonths(1).Year;
-            ViewBag.urlRetorno = HttpContext.Request.Path + HttpContext.Request.QueryString;
-
-
+            /// se envia el modelo a la vista apr ser cargadas las transacciones registradas
             return View(modelo);
         }
 
@@ -264,7 +230,30 @@ namespace ManejoPresupuesto.Controllers
         }
 
 
+        /// <summary>
+        /// Controladores que envian la vista de los reportes segun se seleccione 
+        /// en el submenu del index de transacciones
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult Semanal()
+        {
+            return View();
+        }
 
+        public IActionResult Mensual()
+        {
+            return View();
+        }
+
+        public IActionResult Excel()
+        {
+            return View();
+        }
+
+        public IActionResult Calendario()
+        {
+            return View();
+        }
 
     }
 }
