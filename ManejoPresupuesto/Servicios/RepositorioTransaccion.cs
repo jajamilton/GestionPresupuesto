@@ -13,7 +13,8 @@ namespace ManejoPresupuesto.Servicios
         Task Crear(Transaccion transaccion);
         Task<IEnumerable<Transaccion>> ObtenerPorCuentaId(ObtenerTransaccionPorCuenta modelo);
         Task<Transaccion> ObtenerPorId(int id, int usuarioId);
-
+        Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int año);
+        Task<IEnumerable<ResultadoObtenerProSemena>> ObtenerPorSemana(ParamerosObtenerTransaccioPorUsuario modelo);
         Task<IEnumerable<Transaccion>> ObtenerPorUsuarioId(ParamerosObtenerTransaccioPorUsuario modelo);
     }
 
@@ -106,6 +107,49 @@ namespace ManejoPresupuesto.Servicios
                                                                             and FechaTransaccin BETWEEN @FechaInicio AND @FechaFin
                                                                             ORDER BY t.FechaTransaccin DESC", modelo);
         }
+
+
+        /// <summary>
+        /// Metodo que consulta las transacciones hechas por semana, enviando  un modelo con los parametros requeridos por la consutla
+        /// estos parametros son una fecha inicio y una fecha final, que corresponderian a la fecha inicio y final de un mes para enviar las transacciones 
+        /// de las semana de ese mes
+        /// </summary>
+        /// <param name="modelo">modelo con los parametros usuario, fecha fien, fecha inicio</param>
+        /// <returns>retorna un modelo con los aprametros ya establecido a mostrar, como la semana, el monto toal por semana y el tipo de operacion</returns>
+        public async Task<IEnumerable<ResultadoObtenerProSemena>> ObtenerPorSemana(ParamerosObtenerTransaccioPorUsuario modelo)
+        {
+            using var connetion = new SqlConnection(connectionString);
+            return await connetion.QueryAsync<ResultadoObtenerProSemena>(@"SELECT DATEDIFF(d,@fechaInicio,FechaTransaccin) / 7+1 as Semana,
+                                                                            sum(Monto) as Monto, cat.TipoOperacionId
+                                                                            FROM Transacciones
+                                                                            INNER JOIN Categorias cat
+                                                                            ON cat.Id = Transacciones.CategoriaId
+                                                                            WHERE Transacciones.FechaTransaccin BETWEEN @fechaInicio AND @fechaFin
+                                                                            GROUP BY DATEDIFF(d,@fechaInicio,FechaTransaccin) / 7, cat.TipoOperacionId", modelo);
+        }
+
+
+        /// <summary>
+        /// Metodoq ue consulta desde la base de datos las transacciones hecas en cada mes de año asi como el valor
+        /// total de cada uno de los montos por mes
+        /// </summary>
+        /// <param name="usuarioId">usuario que registro las transacciones</param>
+        /// <param name="año">año en el que se realizan las transacciones</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ResultadoObtenerPorMes>> ObtenerPorMes(int usuarioId, int año)
+        {
+            using var connetion = new SqlConnection(connectionString);
+            return await connetion.QueryAsync<ResultadoObtenerPorMes>(@"SELECT MONTH(FechaTransaccin) as Mes,
+                                                                                SUM(Monto) as Monto, cat.TipoOperacionId
+                                                                                FROM Transacciones
+                                                                                INNER JOIN Categorias cat
+                                                                                ON cat.Id = Transacciones.CategoriaId
+                                                                                WHERE Transacciones.UsuarioId = @usuarioId AND YEAR(FechaTransaccin) = @Año
+                                                                                GROUP BY Month(FechaTransaccin), cat.TipoOperacionId", new {usuarioId, año});
+        }
+
+
+
     }
 
     

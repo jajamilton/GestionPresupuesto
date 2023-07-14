@@ -1,10 +1,59 @@
-﻿
+﻿@model ReporteSemanalViewModel
 
 @{
     ViewData["Title"] = "Reporte Semana";
+
+    string FormatearFecha(DateTime fecha)
+    {
+        return fecha.ToString("MM.dd");
+    }
+
+    var resumenMontos = new ResumenMontosViewModel()
+            {
+                Gastos = Model.Gastos,
+                Ingresos = Model.Ingresos,
+                Total = Model.Total
+            };
 }
 
 
 @*se envia un modelo con un enum para establecer a que vista o a que reporte se ingresa
 para activar asi el menu superior*@
 <partial name="_SubMenu.cshtml" model="SubMenuTransacciones.Semanal" />
+
+<partial name="_NavegadorMeses" model="@Model.FechaReferencia" />
+
+<partial name="_ResumenMontos" model="@resumenMontos"></partial>
+
+<table class="table" style="font-size:20px">
+    <thead>
+        <tr>
+            <th>Semana</th>
+            <th style="text-align:right">Ingresos</th>
+            <th style="text-align:right">Gastos</th>
+        </tr>
+    </thead>
+    @foreach (var transaccionesPorSeman in Model.TransaccionesPorSemana)
+    {
+        <tr>
+            <td>
+                <a style="text-decoration: none" asp-action="Index"
+                asp-route-año="@Model.FechaReferencia.Year"
+                asp-route-mes="@Model.FechaReferencia.Month">
+                    @FormatearFecha(transaccionesPorSeman.FechaInicio)~
+                    @FormatearFecha(transaccionesPorSeman.FechaFin)
+                </a>
+            </td>
+
+            <td class=" " style="text-align:right">
+                @transaccionesPorSeman.Ingresos
+            </td>
+
+            <td class=" " style="text-align:right">
+                @transaccionesPorSeman.Gastos
+            </td>
+
+        </tr>
+    }
+</table>
+    

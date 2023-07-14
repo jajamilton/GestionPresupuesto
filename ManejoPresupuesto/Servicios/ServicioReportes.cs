@@ -11,6 +11,7 @@ namespace ManejoPresupuesto.Servicios
     /// </summary>
     public interface IServicioReportes
     {
+        Task<IEnumerable<ResultadoObtenerProSemena>> ObtenerReporteSemanala(int usuaioId, int mes, int año, dynamic viewbag);
         Task<ReporteTransaccionesDetalledas> ObtenerReporteTransaccionesDetalladas(int usuarioId, int mes, int año, dynamic Viewbag);
         Task<ReporteTransaccionesDetalledas> ObtenerReporteTransaccionesDetalladasProCuenta(int usuarioId, int cuentaId, int mes, int año, dynamic Viewbag);
     }
@@ -37,6 +38,35 @@ namespace ManejoPresupuesto.Servicios
             this.repositorioTransaccion = repositorioTransaccion;
             this.httpContext = httpContextAccessor.HttpContext;
         }
+
+
+        /// <summary>
+        /// Metodoq eu consulta reporte por semana de un mes
+        /// </summary>
+        /// <param name="usuaioId">usuari que registra las transacciones</param>
+        /// <param name="mes">mes del año para general el reporte</param>
+        /// <param name="año"></param>
+        /// <param name="viewbag"></param>
+        /// <returns></returns>
+        public async Task<IEnumerable<ResultadoObtenerProSemena>> ObtenerReporteSemanala(int usuaioId, int mes, int año, dynamic viewbag)
+        {
+            /// se obtienen la fecha actual el mes y el año
+            /// en este caso el dia incial de un mes y la fecha fin del mes
+            (DateTime fechaInicio, DateTime fechaFin) = GenerarFechaInicioFin(mes, año);
+
+            ///se crear un obejtio comn los parametros para consulta las ttransacciones
+            var parametro = new ParamerosObtenerTransaccioPorUsuario()
+            {
+                UsuarioId = usuaioId,
+                FechaInicio = fechaInicio,
+                FechaFin = fechaFin
+            };
+
+            AsignarValorsAlViewBag(viewbag, fechaInicio);
+            var modelo = await repositorioTransaccion.ObtenerPorSemana(parametro);
+            return modelo;
+        }
+
 
 
         /// <summary>

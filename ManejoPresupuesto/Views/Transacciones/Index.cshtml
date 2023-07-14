@@ -8,6 +8,11 @@
 para activar asi el menu superior*@
 <partial name="_SubMenu.cshtml"  model="SubMenuTransacciones.Diario" />
 
+<div class="m-3">
+    <a asp-action="Crear" class="btn btn-primary">Crear una nueva transaccion</a>
+</div>
+
+
 @*Se carga el reporte diario enviando un modelo de tipo reporte transacciones detalladas *@
 <partial name="_ReporteTransaccionesDetalladas" model="Model" />
 

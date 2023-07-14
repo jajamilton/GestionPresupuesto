@@ -1,0 +1,37 @@
+﻿
+@model ResumenMontosViewModel
+
+@{
+
+}
+
+<div class="contenedor-totales mb-3">
+    <div>
+        <div>
+            <strong>Depositos</strong>
+        </div>
+        <div class="activo">
+            @Model.Ingresos.ToString("N")
+        </div>
+    </div>
+</div>
+<div class="contenedor-totales mb-3">
+    <div>
+        <div>
+            <strong>Retiros</strong>
+        </div>
+        <div class="activo">
+            @Model.Gastos.ToString("N")
+        </div>
+    </div>
+</div>
+<div class="contenedor-totales mb-3">
+    <div>
+        <div>
+            <strong>Totales</strong>
+        </div>
+        <div class="activo">
+            @Model.Total.ToString("N")
+        </div>
+    </div>
+</div>

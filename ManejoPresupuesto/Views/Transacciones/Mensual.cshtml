@@ -1,7 +1,71 @@
-﻿@{
+﻿
+@model ReporteMensualViewModel
+
+@{
     ViewData["Title"] = "Reporte Mensual";
+
+    int añoAnterior = Model.Año - 1;
+    int añoPosterior = Model.Año + 1;
+
+    var resumenMontos = new ResumenMontosViewModel()
+            {
+                Gastos = Model.Gastos,
+                Ingresos = Model.Ingresos,
+                Total = Model.Total
+            };
+
+
 }
 
 @*se envia un modelo con un enum para establecer a que vista o a que reporte se ingresa
 para activar asi el menu superior*@
-<partial name="_SubMenu.cshtml" model="SubMenuTransacciones.mensual" />
+
+
+<partial name="_SubMenu" model="SubMenuTransacciones.mensual" />
+
+
+<h4>
+    Mostrando transacciones de
+    <a asp-route-año="@añoAnterior" class="btn btn-second">
+        <i class="bi-chevron-left"></i>
+    </a>
+    @Model.Año
+    <a asp-route-año="@añoPosterior" class="btn btn-second">
+        <i class="bi-chevron-right"></i>
+    </a>
+</h4>
+
+
+
+
+<partial name="_ResumenMontos" model="@resumenMontos" />
+
+
+<table class="table" style="font-size:20px">
+    <thead>
+        <tr style="background-color:lightblue">
+            <th>Mes</th>
+            <th style="text-align:right"> Ingresos</th>
+            <th style="text-align:right"> Gastos</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var transaccionPormes in Model.TransaccionesPorMes)
+        {
+            <tr>
+                <td>
+                    <a style="text-decoration: none" asp-action="Index"
+                    asp-route-año="@Model.Año" asp-route-mes="@transaccionPormes.Mes">
+                        
+                    @transaccionPormes.FechaReferencia.ToString("MMM")
+
+                    </a>
+                </td>
+                <td class="" style="text-align:right">@transaccionPormes.Ingresos</td>
+                <td class="" style="text-align:right">@transaccionPormes.Gastos</td>
+            </tr>
+        }
+    </tbody>
+
+
+</table>
